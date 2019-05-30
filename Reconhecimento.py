@@ -1,6 +1,7 @@
-
+import csv
 import face_recognition
 import cv2
+
 
 # This is a demo of running face recognition on a video file and saving the results to a new video file.
 
@@ -44,12 +45,18 @@ face_locations = []
 face_encodings = []
 face_names = []
 frame_number = 0
-
+file = open('relatorio.csv', 'w')
+csv_file = csv.writer(file)
+init_frame = 0
+init_frame1 = 0
+init_frame2 = 0
+init_frame3 = 0
+init_frame4 = 0
+a = []
 while True:
     # Grab a single frame of video
     ret, frame = input_video.read()
     frame_number += 1
-
     # Quit when the input video file ends
     if not ret:
         break
@@ -71,13 +78,73 @@ while True:
         name = None
         if match[0]:
             name = "Elli"
+            with open("relatorio3.csv", "a") as _file:
+                _file.write('Elly aparece nos frame {}'.format(init_frame1) + "\n")
+                a.append(int(frame_number))
+            init_frame1 = frame_number
+            if init_frame < 1:
+                init_frame = frame_number
+        elif not match[0] and init_frame > 0:
+            for i in range (len(a)):
+                final_frame = a [i-1]
+
+            csv_file.writerow(["Elli aparece nos frame inicial {} frame final {}".format(init_frame, frame_number-1)])
+            with open("relatorio2.csv", "a") as _file:
+                _file.write('Elly aparece nos frame {} ate o frame {}'.format(init_frame, final_frame) + "\n")
+            init_frame = 0
+            final_frame = 0
+            init_frame1 = 0
+            a = []
+
         elif match[1]:
             name = "Allan"
+            a.append(int(frame_number))
+            if init_frame2 < 1:
+                init_frame2 = frame_number
+
+        elif not match[1] and init_frame2 > 0:
+            for i in range (len(a)):
+                final_frame = a [i-1]
+            csv_file.writerow(["Allan aparece nos frames inicial {} frame final {}".format(init_frame2, final_frame)])
+            with open("relatorio2.csv", "a") as _file:
+                _file.write('Allan aparece nos frame {} ate o frame {}'.format(init_frame2, final_frame) + "\n")
+            init_frame2 = 0
+            a = []
+            final_frame = 0
         elif match[2]:
             name = "Iam"
+            a.append(int(frame_number))
+            if init_frame3 < 1:
+                init_frame3 = frame_number
+
+        elif not match[2] and init_frame3 > 0:
+            for i in range (len(a)):
+                final_frame = a [i-1]
+            csv_file.writerow(["Iam aparece nos frames inicial {} frame final {}".format(init_frame3, final_frame)])
+            with open("relatorio2.csv", "a") as _file:
+                _file.write('Iam aparece nos frame {} ate o frame {}'.format(init_frame3, final_frame) + "\n")
+            init_frame3 = 0
+            a = []
+            final_frame = 0
+
+
         elif match[3]:
             name = "Jhon"
+            a.append(int(frame_number))
 
+            if init_frame4 < 1:
+                init_frame4 = frame_number
+
+        elif not match[3] and init_frame4 > 0:
+            for i in range (len(a)):
+                final_frame = a [i-1]
+            csv_file.writerow(["Jhon aparece nos frames inicial {} frame final {}".format(init_frame4, final_frame)])
+            with open("relatorio2.csv", "a") as _file:
+                _file.write('Jhon aparece nos frame {} ate o frame {}'.format(init_frame4, final_frame) + "\n")
+            init_frame4 = 0
+            a = []
+            final_frame = 0
+        #
         face_names.append(name)
 
     # Label the results
